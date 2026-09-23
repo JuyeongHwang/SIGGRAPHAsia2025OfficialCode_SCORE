@@ -1,4 +1,4 @@
-# SIGGRAPH Asia 2025 SCORE
+# [SIGGRAPH Asia 2025 Official Code]
 
 How Does a Virtual Agent Decide Where to Look? Symbolic Cognitive Reasoning for Embodied Head Rotation
 
