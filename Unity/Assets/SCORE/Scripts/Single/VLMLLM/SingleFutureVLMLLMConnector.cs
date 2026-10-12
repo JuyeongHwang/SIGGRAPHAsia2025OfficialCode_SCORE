@@ -15,10 +15,8 @@ public class SingleFutureVLMLLMConnector : MonoBehaviour
     public bool isUseAllFast = true;
     public float VLMCooldown = 5f;
 
-    [Header("Backend")]
-    public LLMProvider provider = LLMProvider.Gemini;
-    public string apiKey = "YOUR_GEMINI_API_KEY";  // 여기에 실제 API 키 입력 (Gemini only)
-    public string ollamaURL = LLMClient.DefaultOllamaURL;
+    [Header("Gemini")]
+    public string apiKey = "YOUR_GEMINI_API_KEY";  // 여기에 실제 API 키 입력
 
     // Gemini models (paper: Gemini 1.5 Pro for DPS; 1.5 was retired, 2.5 is the drop-in)
     public string geminiVLM = "gemini-2.5-pro";
@@ -26,12 +24,8 @@ public class SingleFutureVLMLLMConnector : MonoBehaviour
     public string geminiLLM = "gemini-2.5-pro";
     public string geminiFastLLM = "gemini-2.5-flash";
 
-    // Ollama models (run on each user's own machine, e.g. `ollama pull qwen3-vl:8b`)
-    public string ollamaVLM = "qwen3-vl:8b";
-    public string ollamaLLM = "qwen3-vl:8b";
-
-    string VLMModel => LLMClient.Resolve(provider) == LLMProvider.Ollama ? ollamaVLM : (isUseAllFast ? geminiFastVLM : geminiVLM);
-    string LLMModel => LLMClient.Resolve(provider) == LLMProvider.Ollama ? ollamaLLM : (isUseAllFast ? geminiFastLLM : geminiLLM);
+    string VLMModel => isUseAllFast ? geminiFastVLM : geminiVLM;
+    string LLMModel => isUseAllFast ? geminiFastLLM : geminiLLM;
 
     //============
     [SerializeField] private SigneFutureMovement singlefutureMovement;
@@ -92,7 +86,7 @@ public class SingleFutureVLMLLMConnector : MonoBehaviour
             animator.speed = 0f;
 
         string parsedResponse = "";
-        yield return LLMClient.Send(LLMClient.Resolve(provider), VLMModel, apiKey, ollamaURL,
+        yield return LLMClient.Send(VLMModel, apiKey,
                                     GetVLMPrompt_Future(), capturedImages, t => parsedResponse = t, "VLM");
         stopwatch.Stop(); //stopwatch.ElapsedMilliseconds
         print("VLM Future Latency: " + stopwatch.ElapsedMilliseconds);
@@ -153,7 +147,7 @@ public class SingleFutureVLMLLMConnector : MonoBehaviour
         stopwatch.Start();
 
         string parsedResponse = "";
-        yield return LLMClient.Send(LLMClient.Resolve(provider), LLMModel, apiKey, ollamaURL,
+        yield return LLMClient.Send(LLMModel, apiKey,
                                     GetLLMPrompt_Future(), null, t => parsedResponse = t, "LLM");
 
         if (!string.IsNullOrEmpty(parsedResponse))
@@ -473,7 +467,7 @@ Output Format:
             agentData.SpawnTrigger(roundedPos, futureAction);
     }
 
-    // Local models sometimes wrap the action in brackets, quotes or markdown.
+    // The model sometimes wraps the action in brackets, quotes or markdown.
     static string CleanAction(string raw)
     {
         string a = raw.Trim();

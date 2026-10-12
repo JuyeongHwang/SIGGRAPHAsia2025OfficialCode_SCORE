@@ -11,16 +11,13 @@ using UnityEngine.Networking;
 public class SingleCurrentVLMLLMConnector : MonoBehaviour
 {
     public bool isUseAllFast = true;
-    [Header("Backend")]
-    public LLMProvider provider = LLMProvider.Gemini;
-    public string apiKey = "YOUR_GEMINI_API_KEY";  // 여기에 실제 API 키 입력 (Gemini only)
-    public string ollamaURL = LLMClient.DefaultOllamaURL;
+    [Header("Gemini")]
+    public string apiKey = "YOUR_GEMINI_API_KEY";  // 여기에 실제 API 키 입력
     // RES uses a lightweight FastVLM (paper: Gemini 1.5 Flash; retired -> 2.5 Flash)
     public string geminiVLM = "gemini-2.5-pro";
     public string geminiFastVLM = "gemini-2.5-flash";
-    public string ollamaFastVLM = "qwen3-vl:8b";
 
-    string FastVLMModel => LLMClient.Resolve(provider) == LLMProvider.Ollama ? ollamaFastVLM : (isUseAllFast ? geminiFastVLM : geminiVLM);
+    string FastVLMModel => isUseAllFast ? geminiFastVLM : geminiVLM;
 
     //================
     public SingleCurrentMovement currentMovement;
@@ -44,7 +41,7 @@ public class SingleCurrentVLMLLMConnector : MonoBehaviour
     {
         string scheduled = agentData.GetClosestAction(this.transform.position);
         string parsedResponse = "";
-        yield return LLMClient.Send(LLMClient.Resolve(provider), FastVLMModel, apiKey, ollamaURL,
+        yield return LLMClient.Send(FastVLMModel, apiKey,
                                     GetVLMPrompt_Current(scheduled), capturedImages, t => parsedResponse = t, "RES");
         if (string.IsNullOrEmpty(parsedResponse)) yield break;
 
@@ -69,7 +66,7 @@ public class SingleCurrentVLMLLMConnector : MonoBehaviour
     private IEnumerator ValidateEntry(List<string> capturedImages, PlanEntry entry)
     {
         string parsedResponse = "";
-        yield return LLMClient.Send(LLMClient.Resolve(provider), FastVLMModel, apiKey, ollamaURL,
+        yield return LLMClient.Send(FastVLMModel, apiKey,
                                     GetVLMPrompt_Current(entry.action), capturedImages, t => parsedResponse = t, "RES");
         if (string.IsNullOrEmpty(parsedResponse))
         {
