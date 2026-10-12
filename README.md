@@ -1,6 +1,8 @@
 # [SIGGRAPH Asia 2025 Official Code] SCORE
 
 **How Does a Virtual Agent Decide Where to Look? Symbolic Cognitive Reasoning for Embodied Head Rotation**
+
+
 Juyeong Hwang\*, Seong-Eun Hong\*, JaeYoung Seon, HyeongYeop Kang (\* equal contribution)
 SIGGRAPH Asia 2025 Conference Papers · [Project page](https://juyeonghwang.github.io/SCORE.github.io/)
 
