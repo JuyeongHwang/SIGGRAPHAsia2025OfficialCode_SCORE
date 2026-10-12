@@ -42,6 +42,20 @@ results/SCORE/                       SCORE head trajectories for the ten user-st
 Set `apiKey` on both connectors (do not commit it). Defaults are `gemini-2.5-pro` (DPS) and
 `gemini-2.5-flash` (RES); the paper used Gemini 1.5 Pro / Flash, which have been retired.
 
+**Using other models.** SCORE is not tied to Gemini: any vision–language model that accepts images
+(VLM, FastVLM) and any LLM can be used, whether a hosted API or a model served on your own machine.
+All requests go through `VLMLLM/LLMClient.cs`, so only that file has to change:
+
+* `BuildRequest` — endpoint URL, authentication header and request body of the other API
+  (prompt text + base64 PNG images).
+* `ExtractText` — read the generated text from that API's response.
+
+The prompts, parsing and scheduling stay the same. The model only has to follow the output format
+written in the prompts (`---MEMORY---` / `---SUMMARY---` for the VLM, `---REASONING---`, `---Scores---`,
+`---Explanation---`, `---Action---` for the LLM, and `---Action---` for the FastVLM). Model names are
+set per stage on the connectors (`geminiVLM`, `geminiLLM`, `geminiFastVLM`, ...). Smaller models may
+need a larger context window, because the DPS prompts include several images and the memory.
+
 ## Scheduling
 
 `SingleFutureCurrentAgentData.scheduleMode`
