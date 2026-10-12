@@ -95,6 +95,12 @@ in the CSV format above (without the `Time` column; sampled every 0.05 s).
 * `SingleCurrentCameraSensor` ray-casts against a layer named `Current`. Add that layer (and put the
   agents on it) if you want RES to see other agents; without it, the RES entity list is empty.
 
+## License
+
+The code in this repository is released under the [MIT License](LICENSE). Third-party assets used in the
+study scenes (Synty POLYGON packs, Mixamo animations) are not part of this repository and remain under
+their own licenses.
+
 ## Citation
 
 ```bibtex
