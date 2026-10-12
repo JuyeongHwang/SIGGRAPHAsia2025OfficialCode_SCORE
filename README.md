@@ -4,6 +4,8 @@
 
 
 Juyeong Hwang\*, Seong-Eun Hong\*, JaeYoung Seon, HyeongYeop Kang (\* equal contribution)
+
+
 SIGGRAPH Asia 2025 Conference Papers · [Project page](https://juyeonghwang.github.io/SCORE.github.io/)
 
 
