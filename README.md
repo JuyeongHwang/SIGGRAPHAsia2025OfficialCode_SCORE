@@ -4,10 +4,6 @@
 Juyeong Hwang\*, Seong-Eun Hong\*, JaeYoung Seon, HyeongYeop Kang (\* equal contribution)
 SIGGRAPH Asia 2025 Conference Papers · [Project page](https://juyeonghwang.github.io/SCORE.github.io/)
 
-SCORE synthesizes context-aware head rotation for virtual agents. A Deliberative Perception–Planning
-Stage (VLM + LLM, offline) produces a time-stamped plan of action–reason pairs over five motivational
-drivers (Interest, Information Seeking, Safety, Social Schema, Habit). A Reactive Execution Stage
-(FastVLM, near-online) validates each planned pose shortly before it is displayed.
 
 ## Contents
 
