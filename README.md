@@ -14,7 +14,7 @@ Unity/Assets/SCORE/Scripts/Single/   SCORE (Unity 2022.3, C#)
   SingleFutureCurrentAgentData.cs      time-stamped plan (PlanEntry) + JSON export
   Movement/SingleCurrentMovement.cs    RES agent: replays the path, executes plan entries at their time stamp
   VLMLLM/SingleCurrentVLMLLMConnector.cs RES: FastVLM validation (keep / override), 2 s look-ahead
-  VLMLLM/LLMClient.cs                  backends: Gemini API or a local Ollama server (e.g. Qwen)
+  VLMLLM/LLMClient.cs                  VLM / LLM requests (Gemini API)
   Head/, Sensor/, Recorder/            head control, ray-cast entity lists, CSV recording / playback
 Unity/Assets/Baselines/TRACK/        playback of the Track baseline output
 Unity/Assets/Human/                  playback of recorded human head trajectories, NPC movement
@@ -34,29 +34,12 @@ results/SCORE/                       SCORE head trajectories for the ten user-st
    head pivots `ControlHeadOffset_Single_Future/Current` with an `AgentCamera`, and the parents
    `importantObjects` / `importantAgents` that list the entities the agent may look at
    (object names are what the LLM refers to).
-3. Choose a backend (below), set `cognitive_goal`, and press Play. The DPS agent walks first;
+3. Set the API key (below) and `cognitive_goal`, and press Play. The DPS agent walks first;
    the RES agent then replays the path and records to `Assets/SCOREResult/`.
 
-## Backends
+## VLM / LLM
 
-Each connector has a `provider` field (`Gemini` or `Ollama`); environment variables override it:
-
-```
-SCORE_PROVIDER=ollama             # or gemini
-SCORE_OLLAMA_URL=http://localhost:11434
-```
-
-**Ollama (local, e.g. Qwen):**
-
-```
-ollama pull qwen3-vl:8b
-```
-
-Default models: `qwen3-vl:8b` for the VLM, LLM and FastVLM (`ollamaVLM`, `ollamaLLM`, `ollamaFastVLM`).
-Requests disable the Qwen3 thinking mode and use an 8k context (images plus the SCORE prompt exceed
-Ollama's 4k default). A GPU is strongly recommended; on CPU one DPS decision takes minutes.
-
-**Gemini:** set `apiKey` on both connectors (do not commit it). Defaults are `gemini-2.5-pro` (DPS) and
+Set `apiKey` on both connectors (do not commit it). Defaults are `gemini-2.5-pro` (DPS) and
 `gemini-2.5-flash` (RES); the paper used Gemini 1.5 Pro / Flash, which have been retired.
 
 ## Scheduling
